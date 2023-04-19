@@ -7,6 +7,7 @@ import './index.css'
 // routes
 import Home, { homeLoader } from './routes/Home'
 import Products, { productLoader } from './routes/Products'
+import ProductCategory, { categoryLoader } from './routes/ProductCategory'
 
 const router = createBrowserRouter([
   {
@@ -25,10 +26,12 @@ const router = createBrowserRouter([
         element: <Products />,
         children: [
           {
-
+            path: ":category",
+            element: <ProductCategory />,
+            loader: categoryLoader
           }
         ]
-      }
+      },
     ]
   }
 ])

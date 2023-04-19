@@ -7,7 +7,7 @@ export const homeLoader = async () => {
     const info = await res.json();
 
     const data = await info.products
-    // console.log(data)
+    console.log(data)
     return data
 }
 

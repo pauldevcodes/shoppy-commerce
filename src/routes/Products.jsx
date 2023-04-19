@@ -1,31 +1,35 @@
 import { Suspense, useState } from "react";
-import { Await, useLoaderData, useRouteLoaderData, defer } from "react-router-dom";
+import { Await, useLoaderData, useRouteLoaderData, defer, Outlet } from "react-router-dom";
 import Categories from "../components/Categories";
 import Loaderone from "../loader/Loaderone";
 import ProductsList from "../components/ProductsList";
 
 
-
-
 const Products = () => {
 
-    const { categories, products} = useRouteLoaderData('product-id')
+    const { categories, products } = useRouteLoaderData('product-id')
+    const [bool,setBool] = useState(false)
+
+    const handleBool = () => {
+        setBool(true)
+    }
 
     return (
         <div className=" pt-28 py-16 px-5 lg:px-20">
-            {/* <Categories info={info} /> */}
 
             <Suspense fallback={<Loaderone />}>
                 <Await resolve={(categories)}>
-                    {category => <Categories category={category} />}
+                    {category => <Categories category={category} handleBool={handleBool} />}
                 </Await>
             </Suspense>
-
-            <Suspense fallback={<Loaderone />}>
+            
+            {bool ? <Outlet /> : <Suspense fallback={<Loaderone />}>
                 <Await resolve={(products)}>
                     {product => <ProductsList data={product} />}
                 </Await>
-            </Suspense>
+            </Suspense> }
+            
+   
         </div>
     );
 }
@@ -37,7 +41,7 @@ const categoryLoader = async () => {
 }
 
 const allProducts = async () => {
-    const res = await fetch('https://dummyjson.com/products?limit=34')
+    const res = await fetch('https://dummyjson.com/products?limit=0')
     if (!res.ok) {
         // do something here
     }
